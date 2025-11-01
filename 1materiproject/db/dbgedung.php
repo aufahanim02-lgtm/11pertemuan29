@@ -13,7 +13,6 @@ if ($proses == 'tambah') {
 
     // Ambil data dari POST
     $nama_gedung = $_POST['nama_gedung'] ?? '';
-    $id_kategori = $_POST['id_kategori'] ?? '';
     $kapasitas  = $_POST['kapasitas'] ?? '';
     $harga   = $_POST['harga'] ?? '';
     $fasilitas   = $_POST['fasilitas'] ?? '';
@@ -35,7 +34,6 @@ if ($proses == 'tambah') {
 
     // Sanitize data sebelum query (Penting untuk Keamanan!)
     $nama_gedung_clean = mysqli_real_escape_string($koneksi, $nama_gedung);
-    $id_kategori_clean = mysqli_real_escape_string($koneksi, $id_kategori);
     $kapasitas_clean  = mysqli_real_escape_string($koneksi, $kapasitas);
     $harga_clean   = mysqli_real_escape_string($koneksi, $harga);
     $fasilitas_clean   = mysqli_real_escape_string($koneksi, $fasilitas);
@@ -103,7 +101,6 @@ if ($proses == 'tambah') {
     // Update data
     $query = "UPDATE gedung SET 
                 nama_gedung='$nama_gedung_clean',
-                id_kategori='$id_kategori_clean',
                 kapasitas='$kapasitas_clean',
                 harga='$harga_clean'
                 fasilitasa='$fasilitasa_clean'

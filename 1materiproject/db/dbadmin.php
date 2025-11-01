@@ -143,11 +143,11 @@ elseif ($proses == 'hapus') {
         exit;
     }
 
-    $foto_query = mysqli_query($koneksi, "SELECT fotoadmin FROM admin WHERE id_admin='$idadmin'");
+    $foto_query = mysqli_query($koneksi, "SELECT fotoadmin FROM admin WHERE id_admin='$id_admin'");
     $foto_data = mysqli_fetch_assoc($foto_query);
     $nama_foto = $foto_data['fotoadmin'] ?? null;
 
-    $hapus = mysqli_query($koneksi, "DELETE FROM admin WHERE id_admin='$idadmin'");
+    $hapus = mysqli_query($koneksi, "DELETE FROM admin WHERE id_admin='$id_admin'");
 
     if ($hapus) {
         if ($nama_foto && $nama_foto != 'default-user.png' && file_exists('../foto/admin/' . $nama_foto)) {

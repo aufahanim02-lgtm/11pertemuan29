@@ -1,15 +1,13 @@
-<!-- ===========================================================
-     HALAMAN EDIT ADMIN
-=========================================================== -->
+
 <section class="content">
     <div class="card shadow-sm border-0">
         <div class="card-header bg-gradient-primary text-white">
             <div class="row">
                 <div class="col">
-                    <h5 class="m-0"><i class="fas fa-user-edit me-2"></i> Edit Admin</h5>
+                    <h5 class="m-0"><i class="fas fa-user-edit me-2"></i> Edit kategori</h5>
                 </div>
                 <div class="col text-end">
-                    <a href="index.php?halaman=admin" class="btn btn-light btn-sm">
+                    <a href="index.php?halaman=kategori" class="btn btn-light btn-sm">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
                 </div>
@@ -18,31 +16,13 @@
 
         <div class="card-body">
 
-            <form action="db/dbadmin.php?proses=edit" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="id_admin" value="<?= htmlspecialchars($admin['id_admin']); ?>">
+            <form action="db/dbkategori.php?proses=edit" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id_kategori" value="<?= htmlspecialchars($kategori['id_kategori']); ?>">
 
                 <div class="form-group mb-3">
-                    <label for="nama_admin">nama_admin</label>
-                    <input type="nama_admin" class="form-control" id="nama_admin" name="nama_admin"
-                        placeholder="Masukkan nama_admin baru">
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="username">username</label>
-                    <input type="username" class="form-control" id="username" name="username"
-                        placeholder="Masukkan username">
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="password">Password (kosongkan jika tidak ingin mengubah)</label>
-                    <input type="password" class="form-control" id="password" name="password"
-                        placeholder="Masukkan password baru (opsional)">
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="hp_admin">hp_admin</label>
-                    <input type="hp_admin" class="form-control" id="hp_admin" name="hp_admin"
-                        placeholder="Masukkan hp_admin baru (opsional)">
+                    <label for="nama_kategori">nama_kategori</label>
+                    <input type="nama_kategori" class="form-control" id="nama_kategori" name="nama_kategori"
+                        placeholder="Masukkan nama_kategori baru">
                 </div>
 
                 <div class="form-group mb-3">

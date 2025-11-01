@@ -35,7 +35,7 @@
         </div>
 
         <div class="form-group mb-3">
-          <label class="fw-bold">hp admin</label>
+          <label class="fw-bold">hp_admin</label>
           <input type="text" class="form-control" name="nohp"
                  placeholder="Masukkan hp_admin" required>
         </div>

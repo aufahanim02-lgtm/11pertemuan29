@@ -105,9 +105,7 @@ if ($proses == 'tambah') {
                 hp_pemesan='$hp_pemesan_clean'
                 $foto_query
               WHERE id_pemesan='$id_pemesan_clean'";
-    
-    mysqli_query($koneksi, $query) or die(mysqli_error($koneksi));
-
+               
     // Redirect setelah berhasil
     echo "<script>
             alert('Data pemesan berhasil diupdate!');

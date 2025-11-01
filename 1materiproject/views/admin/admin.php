@@ -32,7 +32,7 @@
                 <!-- Nama Admin -->
                 <h6 class="fw-bold mb-1"><?= htmlspecialchars($row['nama_admin']); ?></h6>
                 <p class="text-muted small mb-3">
-                  <?= htmlspecialchars($row['namajabatan'] ?? 'Belum diatur'); ?>
+                  <?= htmlspecialchars($row['nama_admin'] ?? 'Belum diatur'); ?>
                 </p>
 
                 <!-- Tombol Aksi -->

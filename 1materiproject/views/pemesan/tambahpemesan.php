@@ -8,7 +8,7 @@
       <div class="card-body">
 
         <div class="form-group mb-3">
-          <label for="nama_pemesan" class="fw-bold">Nama_pemesan</label>
+          <label for="nama_pemesan" class="fw-bold">Nama pemesan</label>
           <input type="text" class="form-control" id="nama_pemesan" name="nama_pemesan"
             placeholder="Masukkan nama_pemesan" required>
         </div>

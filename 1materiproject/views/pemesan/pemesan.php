@@ -20,7 +20,7 @@ $query = mysqli_query($koneksi, "SELECT * FROM pemesan");
         <thead class="thead-dark">
           <tr class="text-center">
             <th style="width: 5%">NO</th>
-            <th>Nama pemesan</th>
+            <th>Nama_pemesan</th>
             <th>desa_pemesan</th>
             <th>kec_pemesan</th>
             <th>hp_pemesan</th>

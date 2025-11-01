@@ -20,7 +20,7 @@ $query = mysqli_query($koneksi, "SELECT * FROM gedung");
         <thead class="thead-dark">
           <tr class="text-center">
             <th style="width: 5%">NO</th>
-            <th>Nama gedung</th>
+            <th>Nama_gedung</th>
             <th>kapasitas</th>
             <th>harga</th>
             <th>fasilitas</th>

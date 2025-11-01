@@ -19,7 +19,7 @@ if (!$query) {
 
     <div class="card card-solid">
         <div class="col">
-            <a href="index.php?halaman=tambahkategori" class="btn btn-primary float-right btn-sm mt-3">
+            <a href="index.php?halaman=tambah_kategori" class="btn btn-primary float-right btn-sm mt-3">
                 <i class="fas fa-plus"></i>Kategori
             </a>
 

@@ -22,7 +22,7 @@
                 <input type="hidden" name="id_pemesan" value="<?= htmlspecialchars($pemesan['id_pemesan']); ?>">
 
                 <div class="form-group mb-3">
-                    <label for="nama_pemesan">nama_pemesan</label>
+                    <label for="nama_pemesan">nama pemesan</label>
                     <input type="nama_pemesan" class="form-control" id="nama_pemesan" name="nama_pemesan"
                         placeholder="Masukkan nama_pemesan baru">
                 </div>

@@ -36,13 +36,13 @@
         <div class="form-group mb-3">
           <label for="password">Password (kosongkan jika tidak ingin mengubah)</label>
           <input type="password" class="form-control" id="password" name="password"
-                 placeholder="Masukkan password baru (opsional)">
+                 placeholder="Masukkan password">
         </div>
 
         <div class="form-group mb-3">
           <label for="hp_admin">hp_admin</label>
           <input type="hp_admin" class="form-control" id="hp_admin" name="hp_admin"
-                 placeholder="Masukkan hp_admin baru (opsional)">
+                 placeholder="Masukkan hp_admin">
         </div>
 
         <div class="form-group mb-3">

@@ -1,6 +1,4 @@
-<!-- ===========================================================
-     HALAMAN EDIT gedung
-=========================================================== -->
+
 <section class="content">
     <div class="card shadow-sm border-0">
         <div class="card-header bg-gradient-primary text-white">
@@ -36,19 +34,19 @@
                 <div class="form-group mb-3">
                     <label for="harga">harga</label>
                     <input type="harga" class="form-control" id="harga" name="harga"
-                        placeholder="Masukkan harga ">
+                        placeholder="Masukkan harga">
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="fasilitas">fasilitas</label>
-                    <input type="fasilitas" class="form-control" id="fasilitas" name="n"
+                    <input type="fasilitas" class="form-control" id="fasilitas" name="fasilitas"
                         placeholder="Masukkan fasilitas">
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="foto">Foto gedung</label>
+                    <label for="foto">Foto Admin</label>
                     <div class="mb-2">
-                        <img src="<?= $fotogedung; ?>" alt="Foto gedung"
+                        <img src="<?= $fotoAdmin; ?>" alt="Foto Admin"
                             class="img-thumbnail border"
                             style="width:120px; height:120px; object-fit:cover;">
                     </div>

@@ -28,7 +28,7 @@ if (!$data) {
         <div class="col-md-4 text-center">
           <img src="foto/admin/<?= !empty($data['fotoadmin']) ? $data['fotoadmin'] : 'default-user.png'; ?>" 
                class="img-circle mb-3 shadow" width="150" height="150" alt="Foto Admin">
-          <h5 class="fw-bold"><?= htmlspecialchars($data['namaadmin']); ?></h5>
+          <h5 class="fw-bold"><?= htmlspecialchars($data['nama_admin']); ?></h5>
           <span class="badge bg-success px-3 py-2">Admin</span>
         </div>
 
@@ -44,11 +44,11 @@ if (!$data) {
               <td><?= htmlspecialchars($data['username']); ?></td>
             </tr>
             <tr>
-              <th><i class="fas fa-envelope"></i> Email</th>
+              <th><i class="fas fa-envelope"></i> password</th>
               <td><?= htmlspecialchars($data['password']); ?></td>
             </tr>
             <tr>
-              <th><i class="fas fa-phone"></i> No HP</th>
+              <th><i class="fas fa-phone"></i>hp_admin</th>
               <td><?= htmlspecialchars($data['hp_admin']); ?></td>
             </tr>
             <tr>

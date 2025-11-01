@@ -30,23 +30,57 @@ if ($proses == 'tambah') {
         header("location:../index.php?halaman=tambahkategori&pesan=gagal&error=" . mysqli_error($koneksi));
     }
     
+// --- PROSES EDIT DATA PEMESAN ---
 } elseif ($proses == 'edit') {
-    // Ambil dan bersihkan data input
-    $nama_kategori = mysqli_real_escape_string($koneksi, $_POST['nama_kategori']);
-    // Asumsi: Form menggunakan input hidden name="id_kategori"
-    $id_kategori   = mysqli_real_escape_string($koneksi, $_POST['id_kategori']);
 
-    $sql = "UPDATE kategori SET 
-                nama_kategori='$nama_kategori' 
-            WHERE id_kategori='$id_kategori'";
-
-    if (mysqli_query($koneksi, $sql)) {
-        // Berhasil
-        header("location:../index.php?halaman=kategori&pesan=editberhasil");
-    } else {
-        // Gagal
-        header("location:../index.php?halaman=editkategori&id_kategori=$id_kategori&pesan=gagal&error=" . mysqli_error($koneksi));
+    if (!isset($_POST['id_kategori'])) {
+        die("Error: id_kategori tidak ditemukan di form edit!");
     }
+
+    // Ambil data dari POST
+    $id_kategori   = $_POST['id_kategori'];
+    $nama_kategori = $_POST['nama_kategori'];
+    
+    $foto_name = $_FILES['foto']['name'] ?? '';
+    $foto_tmp  = $_FILES['foto']['tmp_name'] ?? '';
+    // Ganti ke folder foto kategori Anda yang benar
+    $folder    = "../assets/foto_kategori/";
+
+    // Ambil data lama (untuk hapus foto lama)
+    $old_data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT foto FROM kategori WHERE id_kategori='$id_kategori'"));
+
+    // Jika upload foto baru
+    if (!empty($foto_name)) {
+        // Beri nama unik untuk foto
+        $foto_name = time() . '_' . basename($foto_name);
+        move_uploaded_file($foto_tmp, $folder . $foto_name);
+
+        // Hapus foto lama jika ada
+        if (!empty($old_data['foto']) && file_exists($folder . $old_data['foto'])) {
+            unlink($folder . $old_data['foto']);
+        }
+
+        $foto_query = ", foto='".mysqli_real_escape_string($koneksi, $foto_name)."'";
+    } else {
+        $foto_query = "";
+    }
+
+    // Sanitize data teks sebelum query
+    $nama_kategori_clean = mysqli_real_escape_string($koneksi, $nama_kategori);
+    
+    // Update data
+    $query = "UPDATE kategori SET 
+                nama_kategori='$nama_kategori_clean',
+                $foto_query
+              WHERE id_kategori='$id_kategori_clean'";
+               
+    // Redirect setelah berhasil
+    echo "<script>
+            alert('Data kategori berhasil diupdate!');
+            window.location='../index.php?halaman=kategori';
+          </script>";
+    exit;
+
 
 } elseif ($proses == 'hapus') {
     // Ambil ID dari URL GET

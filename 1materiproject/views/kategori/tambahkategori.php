@@ -1,7 +1,7 @@
 <section class="content">
     <div class="card shadow-sm">
         <div class="card-header bg-primary">
-            <h3 class="card-title text-white m-0">Tambah kategori</h3>
+            <h3 class="card-title text-white m-0">Tambahkategori</h3>
         </div>
 
         <form action="db/dbkategori.php?proses=tambah" method="POST" enctype="multipart/form-data">

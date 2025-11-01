@@ -5,6 +5,6 @@ if (!isset($_GET['id'])) {
     exit;
 }
 $id = intval($_GET['id']);
-mysqli_query($koneksi, "DELETE FROM kategori WHERE id_kategori='$id'");
+mysqli_query($koneksi, "DELETE FROM kategori WHERE idkategori='$id'");
 header('Location: index.php?halaman=kategori');
 exit;
