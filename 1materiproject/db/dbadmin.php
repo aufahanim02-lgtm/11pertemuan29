@@ -1,168 +1,104 @@
 <?php
-session_start(); // Penting kalau pakai $_SESSION
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
 
+include "../koneksi.php";
 
-// Cek parameter proses
-if (!isset($_GET['proses'])) {
-    die("Aksi tidak dikenali.");
-}
+$proses = $_GET['proses'] ?? '';
 
-$proses = $_GET['proses'];
-
-// =========================================================
-// ================ PROSES TAMBAH ADMIN ====================
-// =========================================================
 if ($proses == 'tambah') {
-    $nama_admin      = mysqli_real_escape_string($koneksi, $_POST['nama_admin']);
-    $username  = mysqli_real_escape_string($koneksi, $_POST['username']);
-    $password  = trim($_POST['password']);
-    $hp_admin      = mysqli_real_escape_string($koneksi, $_POST['nohp']);
-    
+    $nama_admin = $_POST['nama_admin'] ?? '';
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $hp_admin = $_POST['hp_admin'] ?? '';
 
-    // Validasi minimal
-    if (empty($nama) || empty($username) || empty($password)) {
-        echo "<script>
-                alert('Semua field wajib diisi!');
-                window.history.back();
-              </script>";
-        exit;
+    // Upload foto
+    $foto = '';
+    if (!empty($_FILES['foto']['name'])) {
+        $target_dir = "../uploads/admin/";
+        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
+        $foto = time() . "_" . basename($_FILES["foto"]["name"]);
+        $target_file = $target_dir . $foto;
+        move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file);
     }
 
-    // Enkripsi password
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    $sql = "INSERT INTO admin (nama_admin, username, password, hp_admin, foto)
+            VALUES ('$nama_admin', '$username', '$password', '$hp_admin', '$foto')";
+    mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
 
-    // Proses upload foto
-    $fotoFinal = 'default-user.png';
-    if (!empty($_FILES['fotoadmin']['name'])) {
-        $foto = $_FILES['fotoadmin']['name'];
-        $tmp  = $_FILES['fotoadmin']['tmp_name'];
-        $folder = '/../foto/admin/';
-
-        if (!is_dir($folder)) mkdir($folder, 0777, true);
-
-        $namaFileBaru = time() . '_' . basename($foto);
-        if (move_uploaded_file($tmp, $folder . $namaFileBaru)) {
-            $fotoFinal = $namaFileBaru;
-        }
-    }
-
-    // Simpan ke database
-    $query = "
-        INSERT INTO admin (namaadmin, username, password, nohp, email, idjabatan, fotoadmin)
-        VALUES ('$nama', '$username', '$passwordHash', '$nohp', '$email', $idjabatan, '$fotoFinal')
-    ";
-
-    if (mysqli_query($koneksi, $query)) {
-        echo "<script>
-                alert('Admin berhasil ditambahkan!');
-                window.location='../index.php?halaman=admin';
-              </script>";
-        exit;
-    } else {
-        echo "❌ Gagal menambah admin: " . mysqli_error($koneksi);
-    }
+    header("Location: ../views/admin/admin.php?status=tambah_sukses");
+    exit();
 }
 
-// =========================================================
-// ================ PROSES EDIT ADMIN ======================
-// =========================================================
 elseif ($proses == 'edit') {
-    $id_admin   = intval($_POST['id_admin']);
-    $nama_admin      = mysqli_real_escape_string($koneksi, $_POST['nama_admin']);
-    $username  = mysqli_real_escape_string($koneksi, $_POST['username']);
-    $password  = trim($_POST['password']);
-    $hp_admin     = mysqli_real_escape_string($koneksi, $_POST['hp_admin']);
+    if (empty($_POST['id_admin'])) {
+        die("Error: ID admin tidak ditemukan!");
+    }
+
+    $id_admin = mysqli_real_escape_string($koneksi, $_POST['id_admin']);
+    $nama_admin = $_POST['nama_admin'] ?? '';
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $hp_admin = $_POST['hp_admin'] ?? '';
 
     // Ambil data lama
-    $q_lama = mysqli_query($koneksi, "SELECT fotoadmin FROM admin WHERE id_admin = $id_admin");
-    $d_lama = mysqli_fetch_assoc($q_lama);
-    $foto_lama = $d_lama['fotoadmin'] ?? '';
+    $dataLama = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT foto FROM admin WHERE id_admin='$id_admin'"));
 
-    // Upload foto baru
-    $fotoFinal = $foto_lama;
-    if (!empty($_FILES['fotoadmin']['name'])) {
-        $fotoBaru = $_FILES['fotoadmin']['name'];
-        $tmp = $_FILES['fotoadmin']['tmp_name'];
-        $folderTujuan = '/../foto/admin/';
-        if (!is_dir($folderTujuan)) mkdir($folderTujuan, 0777, true);
+    // Jika ada upload foto baru
+    if (!empty($_FILES['foto']['name'])) {
+        $target_dir = "../uploads/admin/";
+        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
+        $fotoBaru = time() . "_" . basename($_FILES["foto"]["name"]);
+        $target_file = $target_dir . $fotoBaru;
+        move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file);
 
-        $namaFileBaru = time() . '_' . basename($fotoBaru);
-        if (move_uploaded_file($tmp, $folderTujuan . $namaFileBaru)) {
-            $fotoFinal = $namaFileBaru;
-            if (!empty($foto_lama) && file_exists($folderTujuan . $foto_lama)) {
-                unlink($folderTujuan . $foto_lama);
-            }
+        // Hapus foto lama jika ada
+        if (!empty($dataLama['foto']) && file_exists($target_dir . $dataLama['foto'])) {
+            unlink($target_dir . $dataLama['foto']);
         }
+
+        $foto_sql = ", foto='$fotoBaru'";
+    } else {
+        $foto_sql = "";
     }
 
-    // Update query
+    // Jika password kosong, jangan ubah
     if (!empty($password)) {
-        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $query = "
-            UPDATE admin SET 
-                nama_admin='$nama',
-                username='$username',
-                password='$passwordHash',
-                hp_admin='$nohp',
-                foto='$fotoFinal'
-            WHERE id_admin=$id_admin
-        ";
+        $pass_sql = ", password='$password'";
     } else {
-        $query = "
-            UPDATE admin SET 
-                nama_admin='$nama',
-                username='$username',
-                hp_admin='$nohp',
-                fotoadmin='$fotoFinal'
-            WHERE id_admin=$id_admin
-        ";
+        $pass_sql = "";
     }
 
-    if (mysqli_query($koneksi, $query)) {
-        echo "<script>
-                alert('Data admin berhasil diperbarui!');
-                window.location='../index.php?halaman=admin';
-              </script>";
-        exit;
-    } else {
-        echo "❌ Gagal update data: " . mysqli_error($koneksi);
-    }
+    $sql = "UPDATE admin SET 
+                nama_admin='$nama_admin',
+                username='$username',
+                hp_admin='$hp_admin'
+                $pass_sql
+                $foto_sql
+            WHERE id_admin='$id_admin'";
+
+    mysqli_query($koneksi, $sql) or die(mysqli_error($koneksi));
+    header("Location: ../views/admin/admin.php?status=edit_sukses");
+    exit();
 }
 
-// =========================================================
-// ================ PROSES HAPUS ADMIN =====================
-// =========================================================
 elseif ($proses == 'hapus') {
-    $idadmin = base64_decode($_GET['id']);
+    $id_admin = $_GET['id_admin'] ?? '';
+    if ($id_admin == '') die("Error: ID admin tidak ditemukan!");
 
-    if (isset($_SESSION['id_admin']) && $_SESSION['id_admin'] == $id_admin) {
-        echo "<script>
-                alert('Tidak dapat menghapus diri sendiri!');
-                window.location='../index.php?halaman=admin';
-              </script>";
-        exit;
+    $result = mysqli_query($koneksi, "SELECT foto FROM admin WHERE id_admin='$id_admin'");
+    $data = mysqli_fetch_assoc($result);
+    if (!empty($data['foto']) && file_exists("../uploads/admin/" . $data['foto'])) {
+        unlink("../uploads/admin/" . $data['foto']);
     }
 
-    $foto_query = mysqli_query($koneksi, "SELECT fotoadmin FROM admin WHERE id_admin='$id_admin'");
-    $foto_data = mysqli_fetch_assoc($foto_query);
-    $nama_foto = $foto_data['fotoadmin'] ?? null;
-
-    $hapus = mysqli_query($koneksi, "DELETE FROM admin WHERE id_admin='$id_admin'");
-
-    if ($hapus) {
-        if ($nama_foto && $nama_foto != 'default-user.png' && file_exists('../foto/admin/' . $nama_foto)) {
-            unlink('../foto/admin/' . $nama_foto);
-        }
-
-        echo "<script>
-                alert('Admin berhasil dihapus!');
-                window.location='../index.php?halaman=admin';
-              </script>";
-    } else {
-        echo "<script>
-                alert('Gagal menghapus admin.');
-                window.history.back();
-              </script>";
-    }
-    exit;
+    mysqli_query($koneksi, "DELETE FROM admin WHERE id_admin='$id_admin'") or die(mysqli_error($koneksi));
+    header("Location: ../views/admin/admin.php?status=hapus_sukses");
+    exit();
 }
+
+else {
+    echo "Proses tidak dikenal!";
+}
+?>

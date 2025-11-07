@@ -75,6 +75,10 @@ $query = mysqli_query($koneksi, "SELECT * FROM admin");
               include("views/admin/editadmin.php");
               break;
 
+              case "tampiladmin":
+              include("views/admin/tampiladmin.php");
+              break;
+
             // Bagian gedung
             case "gedung":
               include("views/gedung/gedung.php");

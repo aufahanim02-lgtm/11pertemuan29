@@ -12,6 +12,7 @@ $proses = isset($_GET['proses']) ? $_GET['proses'] : '';
 if ($proses == 'tambah') {
 
     // Ambil data dari POST
+    $id_pemesan = $_POST['id_pemesan'] ?? '';
     $nama_pemesan = $_POST['nama_pemesan'] ?? '';
     $desa_pemesan = $_POST['desa_pemesan'] ?? '';
     $kec_pemesan  = $_POST['kec_pemesan'] ?? '';
@@ -33,6 +34,7 @@ if ($proses == 'tambah') {
     }
 
     // Sanitize data sebelum query (Penting untuk Keamanan!)
+    
     $nama_pemesan_clean = mysqli_real_escape_string($koneksi, $nama_pemesan);
     $desa_pemesan_clean = mysqli_real_escape_string($koneksi, $desa_pemesan);
     $kec_pemesan_clean  = mysqli_real_escape_string($koneksi, $kec_pemesan);
